@@ -1,0 +1,53 @@
+{
+  "env": {
+    "MAX_THINKING_TOKENS": "8000"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(./gradlew:*)",
+      "Bash(gradle:*)",
+      "Bash(git:*)",
+      "Bash(npm:*)",
+      "Bash(npx:*)",
+      "Read(./back/**)",
+      "Read(./front/**)",
+      "Edit(./back/**)",
+      "Edit(./front/**)",
+      "Write(.claude/**)",
+      "mcp__postgres__*",
+      "WebFetch(domain:news.hada.io)"
+    ],
+    "deny": [
+      "Read(.env*)",
+      "Edit(.env*)",
+      "Read(./secrets/**)",
+      "Read(**/*.key)",
+      "Read(**/*.pem)"
+    ]
+  },
+  "model": "opus",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const d=JSON.parse(require('fs').readFileSync(0,'utf8')); const p=d.tool_input?.file_path||''; const isEntity=p.includes('/entity/') || p.includes('/domain/'); if(isEntity){console.error('[Hook] Entity/Domain 수정 감지: '+p); console.error('주의: 이 변경은 DB 스키마에 영향을 줄 수 있습니다.');}\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"const d=JSON.parse(require('fs').readFileSync(0,'utf8')); const p=d.tool_input?.file_path||''; if(p.endsWith('.kt')||p.endsWith('.java')){console.log('Kotlin/Java 파일 수정됨. Tip: /verify 로 빌드 검증');} if(p.endsWith('.ts')||p.endsWith('.tsx')){console.log('TypeScript 파일 수정됨. Tip: /verify 로 린트/빌드 검증');}\""
+          }
+        ]
+      }
+    ]
+  }
+}

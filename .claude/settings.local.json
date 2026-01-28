@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh repo view:*)",
+      "Bash(gh api:*)",
+      "Bash(powershell -Command \"cd 'c:\\\\Users\\\\user\\\\Desktop\\\\miceHub\\\\weddly\\\\front'; npm install\":*)",
+      "Bash(powershell -Command \"cd ''c:\\\\Users\\\\user\\\\Desktop\\\\miceHub\\\\weddly\\\\back''; ./gradlew build --no-daemon\")",
+      "Bash(powershell:*)",
+      "WebFetch(domain:www.gpters.org)"
+    ]
+  }
+}
