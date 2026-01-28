@@ -1,0 +1,6 @@
+[submodule "back"]
+	path = back
+	url = https://github.com/leegyeongwhan/weddly-back.git
+[submodule "front"]
+	path = front
+	url = https://github.com/leegyeongwhan/weddly-front.git
